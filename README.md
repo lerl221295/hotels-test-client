@@ -1,4 +1,4 @@
-## Test Hotels Client (ejercicio 2)
+## Test Hotels Client (exercise 2)
 
 Clone the project
 
