@@ -1,0 +1,85 @@
+<md-content>
+    <div layout="row" layout-xs="column">
+        <div ng-if="vm.loading" flex="100" layout="column" layout-align="center-center" style="margin-top: 5rem">
+            <md-progress-circular md-mode="indeterminate" md-diameter="85"></md-progress-circular>
+        </div>
+        <div ng-if="!vm.loading" flex="30" flex-xs="100">
+            <md-card layout="row" class="filters" ng-click="vm.toggleFilters()">
+                <span class="filter-title">Filtros</span>
+            </md-card>
+            <md-card layout="column" class="filter-name" ng-show="vm.filters">
+                <div class="filter-category" ng-click="vm.toggleNameFilter()">
+            		<md-icon md-svg-src="/assets/icons/filters/search.svg" class="search-icon" aria-label="Icon"/></md-icon>
+            		<span>Nombre del hotel</span>
+            	</div>
+            	<div flex layout="row" layout-align="start start" ng-show="vm.filter_panels.name">
+	                <md-input-container class="hotel-name-input" flex="70">
+	                    <label>Ingrese el nombre del hotel</label>
+	                    <input ng-model="vm.filter.name">
+	                </md-input-container>
+	                <md-button flex="30" class="md-raised md-primary" ng-click="vm.search()">
+	                	Aceptar
+	                </md-button>
+            	</div>
+            </md-card>
+            <md-card layout="column" class="filter-stars" ng-show="vm.filters">
+            	<div class="filter-category" ng-click="vm.toggleStarsFilter()">
+            		<md-icon md-svg-src="/assets/icons/filters/star.svg" class="search-icon" aria-label="Icon"/></md-icon>
+            		<span>Estrellas</span>
+            	</div>
+            	<md-checkbox
+                    ng-checked="vm.allStars()"
+                    md-indeterminate="vm.isIndeterminate()"
+                    ng-click="vm.toggleAll()"
+                    ng-show="vm.filter_panels.stars">
+                    Todas las estrellas
+	            </md-checkbox>
+	            <div ng-repeat="stars in [5,4,3,2,1]" ng-show="vm.filter_panels.stars">
+	            	<md-checkbox
+	            		ng-checked="vm.exists(stars)" ng-click="vm.toggle(stars)">
+		            	<md-icon md-svg-src="/assets/icons/filters/star.svg" class="star-icon" aria-label="Star" ng-repeat="star in vm.getArray(stars) track by $index">
+		            	</md-icon>
+		            </md-checkbox>
+	            </div>
+            </md-card>
+        </div>
+        <div ng-if="!vm.loading" flex="70" flex-xs="100">
+            <div ng-repeat="hotel in vm.hotels">
+                <md-card layout="row" layout-xs="column" class="card-hotel">
+                    <img flex="30" flex-xs="100" src="{{vm.API_URL}}/{{hotel.image}}" class="hotel-image">
+                    <div flex="40" flex-xs="100" layout="column" layout-align="start start" class="hotel-info">
+                    	<br hide-gt-xs/>
+                        <span class="hotel-name">
+                    		{{hotel.name}}
+                    	</span>
+                        <div layout="row">
+                            <md-icon md-svg-src="/assets/icons/filters/star.svg" class="star-icon" aria-label="Star" ng-repeat="star in vm.getArray(hotel.stars) track by $index">
+                            </md-icon>
+                        </div>
+                        <div layout="row">
+                            <div ng-repeat="amenitie in hotel.amenities">
+                                <md-icon md-svg-src="/assets/icons/amenities/{{amenitie}}.svg" class="amenitie-icon" aria-label="Amenitie">
+                                </md-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rightborder" hide-xs></div>
+                    <div class="bottomborder" hide-gt-xs></div>
+                    <div flex="30" flex-xs="100" layout="column" layout-align="center center">
+                        <span class="hotel-price-title">
+                    		Precio por noche por
+                    	</span>
+                    	<span class="hotel-price-title">
+                    		habitación
+                    	</span>
+                        <span class="hotel-price">
+							<span class="coinage">ARS</span> <span class="mount">{{hotel.price}}</span>
+						</span>
+                        <md-button class="md-raised md-primary">Ver hotel</md-button>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+        <md-divider ng-if="!vm.loading"></md-divider>
+    </div>
+</md-content>
